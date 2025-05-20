@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TeamTaskManager.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.Test(System.Int32)">
+            <summary>
+            Test Endpoint to see if the controller is working
+            </summary>
+            <param name="id"></param>
+            <returns>The Id passed in.</returns>
+        </member>
+    </members>
+</doc>
