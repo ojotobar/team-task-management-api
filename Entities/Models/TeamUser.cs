@@ -1,11 +1,13 @@
-﻿namespace Entities.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Entities.Models
 {
-    public class TeamUser
+    public class TeamUser : EntityBase
     {
         public Guid TeamId { get; set; }
         public Team? Team { get; set; }
 
         public string UserId { get; set; } = string.Empty;
-        public AppUser? User { get; set; }
+        public User? User { get; set; }
     }
 }

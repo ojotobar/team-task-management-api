@@ -1,31 +1,38 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities.Exceptions;
+using Entities.Responses;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApiControllerBase : ControllerBase
     {
-        //[ApiExplorerSettings(IgnoreApi = true)]
-        //protected IActionResult ProcessError(ApiBaseResponse baseResponse)
-        //{
-        //    return baseResponse switch
-        //    {
-        //        ApiNotFoundResponse => NotFound(new ErrorDetails
-        //        {
-        //            Message = ((ApiNotFoundResponse)baseResponse).Message,
-        //            StatusCode = StatusCodes.Status404NotFound
-        //        }),
-        //        ApiBadRequestResponse => BadRequest(new ErrorDetails
-        //        {
-        //            Message = ((ApiBadRequestResponse)baseResponse).Message,
-        //            StatusCode = StatusCodes.Status400BadRequest
-        //        }),
-        //        ApiUnathorizedResponse => Unauthorized(new ErrorDetails
-        //        {
-        //            Message = ((ApiUnathorizedResponse)baseResponse).Message,
-        //            StatusCode = StatusCodes.Status401Unauthorized
-        //        }),
-        //        _ => throw new NotImplementedException()
-        //    };
-        //}
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseResponse"></param>
+        /// <returns>IActionResult</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [ApiExplorerSettings(IgnoreApi = true)]
+        protected IActionResult ProcessError(ApiResponseBase baseResponse)
+        {
+            return baseResponse switch
+            {
+                NotFoundResponse => NotFound(new ExceptionResponse
+                {
+                    Message = ((NotFoundResponse)baseResponse).Message,
+                    StatusCode = StatusCodes.Status404NotFound
+                }),
+                BadRequestResponse => BadRequest(new ExceptionResponse
+                {
+                    Message = ((BadRequestResponse)baseResponse).Message,
+                    StatusCode = StatusCodes.Status400BadRequest
+                }),
+                _ => throw new NotImplementedException()
+            };
+        }
     }
 }

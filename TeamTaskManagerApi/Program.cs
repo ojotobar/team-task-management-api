@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 LogConfigurations.ConfigureLogging();
 // Add services to the container.
 builder.Services.ConfigureController();
+builder.Services.ConfigreDbContext(builder.Configuration);
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureLoggerService();
@@ -15,6 +16,8 @@ builder.Services.ConfigureServices();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
 
 var app = builder.Build();
 
@@ -30,7 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

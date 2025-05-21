@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -13,11 +14,11 @@ namespace Entities.Models
 
         public string CreatedByUserId { get; set; } = string.Empty;
         //Navigation Property
-        public AppUser? CreatedByUser { get; set; }
+        public User? CreatedByUser { get; set; }
 
         public string AssignedToUserId { get; set; } = string.Empty;
         //Navigation Property
-        public AppUser? AssignedToUser { get; set; }
+        public User? AssignedToUser { get; set; }
 
         public Guid TeamId { get; set; }
         //Navigation Property

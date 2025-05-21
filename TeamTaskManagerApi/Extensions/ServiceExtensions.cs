@@ -1,18 +1,49 @@
 ﻿using Asp.Versioning;
 using Contracts;
+using Entities.Models;
 using LoggerService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using Repositories;
 using Services;
 using Services.Contracts;
+using TeamTaskManagerApi.Configurations;
 
 namespace TeamTaskManagerApi.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigreDbContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            var connectionString = LogConfigurations.GetConfigurations(env).GetConnectionString("Default") 
+                ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+        }
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
+        }
+
         public static void ConfigureServices(this IServiceCollection services)
         {
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
         }
 

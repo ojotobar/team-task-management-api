@@ -7,10 +7,7 @@ namespace TeamTaskManagerApi.Configurations
         public static void ConfigureLogging()
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env}.json", optional: true)
-                .Build();
+            var config = GetConfigurations(env);
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -19,6 +16,16 @@ namespace TeamTaskManagerApi.Configurations
                 .Enrich.WithProperty("Environment", env)
                 .ReadFrom.Configuration(config)
                 .CreateLogger();
+        }
+
+        public static IConfigurationRoot GetConfigurations(string environment)
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                .Build();
+
+            return config;
         }
     }
 }

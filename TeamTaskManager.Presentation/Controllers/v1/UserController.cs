@@ -6,7 +6,7 @@ using Services.Contracts;
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiversion}/user")]
+    [Route("api/v{version:apiversion}/users")]
     [ApiController]
     public class UserController : ApiControllerBase
     {
