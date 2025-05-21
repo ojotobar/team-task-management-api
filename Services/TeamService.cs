@@ -1,5 +1,8 @@
 ﻿using Contracts;
+using Entities.Responses;
 using Services.Contracts;
+using Shared;
+using Shared.DTO;
 
 namespace Services
 {
@@ -12,6 +15,15 @@ namespace Services
         {
             this._logger = logger;
             this._repository = repository;
+        }
+
+        public async Task<ApiResponseBase> Create(CreateTeamDto dto)
+        {
+            var team = dto.Map();
+            await _repository.Team.AddAsync(team);
+            await _repository.SaveAsync();
+
+            return new OkResponse<string>(ResponseMessages.TeamCreated);
         }
     }
 }

@@ -7,5 +7,8 @@ namespace Repositories
     {
         public TeamRepository(AppDbContext context) : base(context)
         { }
+
+        public async Task AddAsync(Team team) =>
+            await CreateAsync(team);
     }
 }

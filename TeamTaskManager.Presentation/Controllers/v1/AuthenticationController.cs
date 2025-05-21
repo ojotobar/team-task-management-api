@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
+using TeamTaskManager.Presentation.Controllers.v1.Extensions;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -53,7 +54,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
                 return ProcessError(baseResponse);
             }
 
-            return Ok(baseResponse);
+            return Ok(new { AccessToken = baseResponse.GetResult<string>() });
         }
     }
 }

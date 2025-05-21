@@ -17,7 +17,7 @@ namespace Services
             IConfiguration configuration)
         {
             _userService = new Lazy<IUserService>(() =>
-                new UserService(logger, repository));
+                new UserService(logger, repository, userManager));
             _taskService = new Lazy<ITaskService>(() =>
                 new TaskService(repository, logger));
             _authenticationService = new Lazy<IAuthenticationService>(() =>

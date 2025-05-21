@@ -31,12 +31,19 @@
             <param name="request"></param>
             <returns>Access Token</returns>
         </member>
-        <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.Test">
+        <member name="M:TeamTaskManager.Presentation.Controllers.v1.TeamController.Create(Shared.DTO.CreateTeamDto)">
             <summary>
-            Test Endpoint to see if the controller is working
+            Creates a Team.
+            Only a User on the Team Admin role can access this endpoint
             </summary>
-            <param name="id"></param>
-            <returns>The Id passed in.</returns>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.GetLoggedInUserDetails">
+            <summary>
+            Get loggedin user details
+            </summary>
+            <returns>User details</returns>
         </member>
     </members>
 </doc>

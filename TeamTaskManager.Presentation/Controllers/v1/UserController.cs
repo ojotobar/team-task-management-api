@@ -18,16 +18,21 @@ namespace TeamTaskManager.Presentation.Controllers.v1
             this._services = service;
 
         /// <summary>
-        /// Test Endpoint to see if the controller is working
+        /// Get loggedin user details
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>The Id passed in.</returns>
-        [HttpGet]
+        /// <returns>User details</returns>
+        [HttpGet("me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Test()
+        public async Task<IActionResult> GetLoggedInUserDetails()
         {
-            return Ok(_services.User.GetUserId());
+            var result = await _services.User.GetLoggedInUserInfo();
+            if(!result.Success)
+                return ProcessError(result);
+
+            return Ok(result);
         }
     }
 }

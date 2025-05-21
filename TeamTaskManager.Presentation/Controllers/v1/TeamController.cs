@@ -1,7 +1,10 @@
 ﻿using Asp.Versioning;
+using Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
+using Shared.DTO;
+using Shared.Extrensions;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -18,10 +21,21 @@ namespace TeamTaskManager.Presentation.Controllers.v1
             this._service = service;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        /// <summary>
+        /// Creates a Team.
+        /// Only a User on the Team Admin role can access this endpoint
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "TeamAdmin")]
+        public async Task<IActionResult> Create([FromBody] CreateTeamDto request)
         {
-            return Ok(new object[0]);
+            var result = await _service.Team.Create(request);
+            if(!result.Success)
+                return ProcessError(result);
+
+            return Ok(result);
         }
     }
 }

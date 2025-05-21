@@ -12,5 +12,19 @@ namespace Shared.DTO
                 UserName = registrationDto.Email,
                 EmailConfirmed = true
             };
+
+        public static UserToReturnDto Map(this User user) =>
+            new()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email
+            };
+
+        public static Team Map(this CreateTeamDto teamDto) =>
+            new()
+            {
+                Name = teamDto.TeamName
+            };
     }
 }

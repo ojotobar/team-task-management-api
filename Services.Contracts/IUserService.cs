@@ -1,7 +1,9 @@
-﻿namespace Services.Contracts
+﻿using Entities.Responses;
+
+namespace Services.Contracts
 {
     public interface IUserService
     {
-        string GetUserId();
+        Task<ApiResponseBase> GetLoggedInUserInfo();
     }
 }
