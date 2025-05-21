@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
-using TeamTaskManager.Presentation.Controllers.v1.Extensions;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
     [ApiVersion("1.0")]
-    [Route("api/auth/v{version:apiversion}/auth")]
+    [Route("api/v{version:apiversion}/auth")]
     [ApiController]
     public class AuthenticationController : ApiControllerBase
     {

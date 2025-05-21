@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -8,6 +9,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiversion}/users")]
     [ApiController]
+    [Authorize]
     public class UserController : ApiControllerBase
     {
         private readonly IServiceManager _services;
@@ -20,12 +22,12 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The Id passed in.</returns>
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Test([FromRoute] int id)
+        public IActionResult Test()
         {
-            return Ok(new { id });
+            return Ok(_services.User.GetUserId());
         }
     }
 }

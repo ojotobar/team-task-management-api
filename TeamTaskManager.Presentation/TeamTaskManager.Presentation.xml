@@ -31,7 +31,7 @@
             <param name="request"></param>
             <returns>Access Token</returns>
         </member>
-        <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.Test(System.Int32)">
+        <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.Test">
             <summary>
             Test Endpoint to see if the controller is working
             </summary>

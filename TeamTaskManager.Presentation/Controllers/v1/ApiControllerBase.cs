@@ -31,6 +31,11 @@ namespace TeamTaskManager.Presentation.Controllers.v1
                     Message = ((BadRequestResponse)baseResponse).Message,
                     StatusCode = StatusCodes.Status400BadRequest
                 }),
+                UnAuthorizedResponse => Unauthorized(new ExceptionResponse
+                {
+                    Message = ((UnAuthorizedResponse)baseResponse).Message,
+                    StatusCode = StatusCodes.Status401Unauthorized
+                }),
                 _ => throw new NotImplementedException()
             };
         }
