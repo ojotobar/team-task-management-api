@@ -19,11 +19,11 @@ namespace Services
             _userService = new Lazy<IUserService>(() =>
                 new UserService(logger, repository, userManager));
             _taskService = new Lazy<ITaskService>(() =>
-                new TaskService(repository, logger));
+                new TaskService(repository, logger, userManager));
             _authenticationService = new Lazy<IAuthenticationService>(() =>
                 new AuthenticationService(logger, userManager, configuration));
             _teamService = new Lazy<ITeamService>(() =>
-                new TeamService(logger, repository));
+                new TeamService(logger, repository, userManager));
         }
 
         public IUserService User => _userService.Value;

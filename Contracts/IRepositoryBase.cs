@@ -12,5 +12,6 @@ namespace Contracts
         Task<T?> FindOneAsync(Expression<Func<T, bool>> expression, bool trackChanges = true);
         IQueryable<T> FindMany(Expression<Func<T, bool>> expression, bool trackChanges = false);
         IQueryable<T> FindMany(bool trackChanges = false);
+        Task CreateRangeAsync(List<T> entities);
     }
 }

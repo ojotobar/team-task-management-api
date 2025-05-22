@@ -34,5 +34,22 @@ namespace TeamTaskManager.Presentation.Controllers.v1
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Get all users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles = "TeamAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _services.User.GetUsers();
+            if (!result.Success)
+                return ProcessError(result);
+
+            return Ok(result);
+        }
     }
 }

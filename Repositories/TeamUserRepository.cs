@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using System.Linq.Expressions;
 
 namespace Repositories
 {
@@ -7,5 +8,11 @@ namespace Repositories
     {
         public TeamUserRepository(AppDbContext context): base(context)
         { }
+
+        public async Task AddRangeAsync(List<TeamUser> teamUsers) =>
+            await CreateRangeAsync(teamUsers);
+
+        public IQueryable<TeamUser> FindBy(Expression<Func<TeamUser, bool>> predicate) =>
+            FindMany(predicate);
     }
 }

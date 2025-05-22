@@ -2,7 +2,7 @@
 
 namespace Entities.Enums
 {
-    public enum TaskStatus
+    public enum TaskItemStatus
     {
         [Description("Pending")]
         Pending,

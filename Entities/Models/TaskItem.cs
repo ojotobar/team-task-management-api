@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
@@ -10,7 +11,7 @@ namespace Entities.Models
         public string Description { get; set; } = string.Empty;
         public DateTime? DueDate { get; set; }
         [Required]
-        public TaskStatus Status { get; set; }
+        public TaskItemStatus Status { get; set; } = TaskItemStatus.Pending;
 
         public string CreatedByUserId { get; set; } = string.Empty;
         //Navigation Property

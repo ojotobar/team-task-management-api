@@ -14,6 +14,9 @@ namespace Repositories
         public async Task CreateAsync(T entity) =>
             await _context.Set<T>().AddAsync(entity);
 
+        public async Task CreateRangeAsync(List<T> entities) =>
+            await _context.Set<T>().AddRangeAsync(entities);
+
         public void Delete(T entity) =>
             _context.Set<T>().Remove(entity);
 

@@ -2,6 +2,7 @@
 using Entities.Models;
 using Entities.Responses;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Services.Contracts;
 using Shared;
 using Shared.DTO;
@@ -37,6 +38,13 @@ namespace Services
             }
 
             return new OkResponse<UserToReturnDto>(user.Map());
+        }
+
+        public async Task<ApiResponseBase> GetUsers()
+        {
+            var users = await _userManager.Users.Where(u => u.EmailConfirmed).ToListAsync() ?? new List<User>();
+            
+            return new OkResponse<List<UserToReturnDto>>(users.Map());
         }
     }
 }

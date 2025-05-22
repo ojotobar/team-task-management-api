@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Services.Contracts;
+using Services.Validations;
 using Shared;
 using Shared.DTO;
 using Shared.Extrensions;
@@ -31,13 +32,13 @@ namespace Services
 
         public async Task<ApiResponseBase> Register(RegistrationDto registrationDto)
         {
-            if (registrationDto.Password.Equals(registrationDto.ConfirmPassword))
+            var validator = new RegistrationValidator().Validate(registrationDto);
+            if (!validator.IsValid)
             {
-                return new BadRequestResponse(ResponseMessages.PasswordMustMatch);
+                return new BadRequestResponse(validator.Errors.FirstOrDefault()?.ErrorMessage ?? ResponseMessages.InvalidInput);
             }
 
             var user = registrationDto.Map();
-
             var result = await _userManager.CreateAsync(user, registrationDto.Password);
             if (result.Succeeded)
             {
@@ -58,6 +59,12 @@ namespace Services
 
         public async Task<ApiResponseBase> Login(LoginDto loginDto)
         {
+            var validator = new LoginValidator().Validate(loginDto);
+            if (!validator.IsValid)
+            {
+                return new BadRequestResponse(validator.Errors.FirstOrDefault()?.ErrorMessage ?? ResponseMessages.InvalidInput);
+            }
+
             var validated = await IsUserValidated(loginDto);
             if (!validated)
             {

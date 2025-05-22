@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repositories
 {
@@ -10,5 +11,12 @@ namespace Repositories
 
         public async Task AddAsync(Team team) =>
             await CreateAsync(team);
+
+        public async Task<Team?> FindByIdAsync(Guid id, bool trachChanges) =>
+            await FindOneAsync(t => t.Id.Equals(id), trachChanges);
+
+        public async Task<List<Team>> FindAllAsync(bool trachChanges) =>
+            await FindMany(trachChanges)
+                .ToListAsync();
     }
 }
