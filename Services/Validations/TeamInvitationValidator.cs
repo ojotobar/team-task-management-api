@@ -3,7 +3,7 @@ using Shared.DTO;
 
 namespace Services.Validations
 {
-    internal class TeamInvitationValidator : AbstractValidator<TeamInvitaionDto>
+    public class TeamInvitationValidator : AbstractValidator<TeamInvitaionDto>
     {
         public TeamInvitationValidator()
         {

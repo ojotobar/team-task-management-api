@@ -14,8 +14,7 @@
 
         public static bool BeValidUserIds(List<string> userIds)
         {
-            var allAreValidIds = userIds.All(x => Guid.TryParse(x, out var _));
-            return allAreValidIds;
+            return userIds != null && userIds.Count > 0 && userIds.All(x => Guid.TryParse(x, out var _));
         }
 
         public static bool BeAValidUserId(string userId)
