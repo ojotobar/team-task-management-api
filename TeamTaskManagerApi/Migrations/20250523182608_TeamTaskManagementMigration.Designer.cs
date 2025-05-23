@@ -12,8 +12,8 @@ using Repositories;
 namespace TeamTaskManagerApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250521135714_DatabaseMigration")]
-    partial class DatabaseMigration
+    [Migration("20250523182608_TeamTaskManagementMigration")]
+    partial class TeamTaskManagementMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
