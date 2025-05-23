@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TeamTaskManager.Presentation.Controllers.v1;
 using Xunit;
 
-namespace TeakTaskManagerApi.Tests.Auth
+namespace TeakTaskManagerApi.Tests
 {
     public class AuthServiceTests
     {
