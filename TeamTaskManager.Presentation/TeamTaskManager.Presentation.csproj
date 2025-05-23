@@ -21,6 +21,7 @@
         <PackageReference Include="Asp.Versioning.Mvc" Version="6.4.1" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj" />
         <ProjectReference Include="..\Entities\Entities.csproj" />
         <ProjectReference Include="..\Services.Contracts\Services.Contracts.csproj" />
     </ItemGroup>

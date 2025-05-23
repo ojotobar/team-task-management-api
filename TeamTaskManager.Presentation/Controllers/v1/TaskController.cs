@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
@@ -21,62 +22,21 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Create a task
+        /// Updates task details
         /// </summary>
-        /// <param name="teamId"></param>
+        /// <param name="taskId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("{teamId}")]
-        public async Task<IActionResult> Create([FromRoute] Guid teamId, [FromBody] TaskCreateDto request)
+        [HttpPut("{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update([FromRoute] Guid taskId, [FromBody] TaskUpdateDto request)
         {
-            var result = await _service.Task.CreateAsync(teamId, request);
-            if(!result.Success)
-                return ProcessError(result);
-
-            return Ok(result.GetResult<LeanTaskToReturnDto>());
-        }
-
-        /// <summary>
-        /// Gets team tasks
-        /// </summary>
-        /// <param name="teamId"></param>
-        /// <returns></returns>
-        [HttpGet("{teamId}/tasks")]
-        public async Task<IActionResult> Get(Guid teamId)
-        {
-            var result = await _service.Task.GetTeamTasksAsync(teamId);
-            if (!result.Success)
-                return ProcessError(result);
-
-            return Ok(result.GetResult<List<TaskToReturnDto>>());
-        }
-
-        /// <summary>
-        /// Update task status
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateStatus([FromRoute] Guid id, [FromBody] TaskStatusDto status)
-        {
-            var result = await _service.Task.UpdateStatus(id, status);
-            if (!result.Success)
-                return ProcessError(result);
-
-            return Ok(result.GetResult<LeanTaskToReturnDto>());
-        }
-
-       /// <summary>
-       /// Updates task details
-       /// </summary>
-       /// <param name="id"></param>
-       /// <param name="request"></param>
-       /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] TaskUpdateDto request)
-        {
-            var result = await _service.Task.Update(id, request);
+            var result = await _service.Task.Update(taskId, request);
             if (!result.Success)
                 return ProcessError(result);
 
@@ -86,16 +46,44 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <summary>
         /// Deprecates a task record
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="taskId"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Deprecate([FromRoute] Guid id)
+        [HttpDelete("{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Deprecate([FromRoute] Guid taskId)
         {
-            var result = await _service.Task.Deprecate(id);
+            var result = await _service.Task.Deprecate(taskId);
             if (!result.Success)
                 return ProcessError(result);
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Update task status
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPatch("{taskId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateStatus([FromRoute] Guid taskId, [FromBody] TaskStatusDto request)
+        {
+            var result = await _service.Task.UpdateStatus(taskId, request);
+            if (!result.Success)
+                return ProcessError(result);
+
+            return Ok(result.GetResult<LeanTaskToReturnDto>());
         }
     }
 }

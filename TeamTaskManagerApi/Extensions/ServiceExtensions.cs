@@ -13,6 +13,7 @@ using Repositories;
 using Services;
 using Services.Contracts;
 using System.Text;
+using TeamTaskManager.Presentation.Filters;
 using TeamTaskManagerApi.Configurations;
 
 namespace TeamTaskManagerApi.Extensions
@@ -70,6 +71,7 @@ namespace TeamTaskManagerApi.Extensions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
+            services.AddScoped<TeamPermissionFilter>();
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
         }
@@ -100,7 +102,7 @@ namespace TeamTaskManagerApi.Extensions
                 .AddApplicationPart(typeof(TeamTaskManager.Presentation.AssemblyReference).Assembly);
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>
-            services.AddSingleton<IAppLogger, AppLogger>();
+            services.AddSingleton<IAppLogger, AppLogger<Program>>();
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {

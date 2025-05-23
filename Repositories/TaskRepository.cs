@@ -9,8 +9,11 @@ namespace Repositories
         public TaskRepository(AppDbContext context) : base(context)
         { }
 
-        public async Task AddAsync(TaskItem item) =>
-            await CreateAsync(item);
+        public async Task AddAsync(TaskItem entity) =>
+            await CreateAsync(entity);
+
+        public async Task AddRangeAsync(List<TaskItem> entities) =>
+            await CreateRangeAsync(entities);
 
         public async Task<List<TaskItem>> FindAsync(Guid teamId)
         {

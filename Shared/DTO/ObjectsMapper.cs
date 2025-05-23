@@ -13,6 +13,7 @@ namespace Shared.DTO
             task.AssignedToUserId = dto.AssignTo;
             return task;
         }
+
         public static TaskItem Map(this TaskDtoBase task, string userId, Guid teamId) =>
             new()
             {
@@ -23,6 +24,17 @@ namespace Shared.DTO
                 DueDate = task.DueOn,
                 TeamId = teamId
             };
+
+        public static List<TaskItem> Map(this List<TaskCreateDto> tasks, string userId, Guid teamId)
+        {
+            var entities = new List<TaskItem>();
+            tasks.ForEach(task =>
+            {
+                entities.Add(task.Map(userId, teamId));
+            });
+
+            return entities;
+        }
 
         public static LeanTaskToReturnDto Map(this TaskItem task) =>
             new ()
@@ -72,6 +84,17 @@ namespace Shared.DTO
             tasks.ForEach(task =>
             {
                 data.Add(task.MapTo());
+            });
+
+            return data;
+        }
+
+        public static List<LeanTaskToReturnDto> MapTo(this List<TaskItem> tasks)
+        {
+            var data = new List<LeanTaskToReturnDto>();
+            tasks.ForEach(task =>
+            {
+                data.Add(task.Map());
             });
 
             return data;
@@ -136,6 +159,13 @@ namespace Shared.DTO
             new()
             {
                 Name = teamDto.TeamName
+            };
+
+        public static TeamToReturnDto Map(this Team team) =>
+            new()
+            {
+                Id = team.Id,
+                Name = team.Name
             };
 
         public static List<TeamToReturnDto> Map(this List<Team> teams)

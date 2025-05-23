@@ -35,30 +35,7 @@ namespace Services
             await _repository.Team.AddAsync(team);
             await _repository.SaveAsync();
 
-            return new OkResponse<string>(ResponseMessages.TeamCreated);
-        }
-
-        public async Task<ApiResponseBase> Get()
-        {
-            var teams = await _repository.Team.FindAllAsync(false);
-            return new OkResponse<List<TeamToReturnDto>>(teams.Map());
-        }
-
-        public async Task<ApiResponseBase> GetTeamMembers(Guid teamId)
-        {
-            var team = await _repository.Team.FindByIdAsync(teamId, false);
-            if (team == null)
-            {
-                _logger.LogError($"TeamId {teamId}: {ResponseMessages.TeamRecordNotFound}");
-                return new NotFoundResponse(ResponseMessages.TeamRecordNotFound);
-            }
-
-            var teamUser = await _repository.TeamUser.FindBy(tu => tu.TeamId.Equals(teamId))
-                .Include(u => u.User)
-                .ToListAsync();
-
-            var data = teamUser.Select(u => u.User).Map();
-            return new OkResponse<List<UserToReturnDto>>(data);
+            return new OkResponse<TeamToReturnDto>(team.Map());
         }
 
         public async Task<ApiResponseBase> InviteUsers(Guid teamId, TeamInvitaionDto dto)
@@ -84,7 +61,8 @@ namespace Services
                 return new BadRequestResponse(ResponseMessages.InvalidInput);
             }
 
-            var existingUsers = await _repository.TeamUser.FindBy(tu => users.Select(u => u.Id).Contains(tu.UserId))
+            var existingUsers = await _repository.TeamUser
+                .FindBy(tu => tu.TeamId.Equals(teamId) && users.Select(u => u.Id).Contains(tu.UserId))
                 .ToListAsync();
 
             if(existingUsers.Count > 0)

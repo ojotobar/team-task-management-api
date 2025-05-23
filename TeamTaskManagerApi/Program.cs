@@ -1,10 +1,12 @@
 using Contracts;
+using Serilog;
 using TeamTaskManagerApi.Configurations;
 using TeamTaskManagerApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 //Configre logging
 LogConfigurations.ConfigureLogging();
+builder.Host.UseSerilog();
 // Add services to the container.
 builder.Services.ConfigureController();
 builder.Services.ConfigreDbContext(builder.Configuration);

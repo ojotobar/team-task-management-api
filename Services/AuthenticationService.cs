@@ -4,6 +4,7 @@ using Entities.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Services.Contracts;
 using Services.Validations;
 using Shared;
@@ -45,10 +46,12 @@ namespace Services
                 var roleResult = await _userManager.AddToRoleAsync(user, registrationDto.Role.GetDescription());
                 if (roleResult.Succeeded)
                 {
-                    return new OkResponse<string>(ResponseMessages.RegistrationSuccessful);
+                    _logger.LogInfo($"{nameof(AuthenticationService.Register)} - User Registered: {JsonConvert.SerializeObject(user)}");
+                    return new OkResponse<UserToReturnDto>(user.Map());
                 }
                 else
                 {
+                    _logger.LogInfo($"{nameof(AuthenticationService.Register)} - User Registration failed: {string.Join(',', roleResult.Errors)}");
                     await _userManager.DeleteAsync(user);
                     return new BadRequestResponse(roleResult.Errors.FirstOrDefault()?.Description ?? ResponseMessages.GenericErrorMessage);
                 }

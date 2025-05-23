@@ -24,25 +24,17 @@ namespace Services
             _repository = repository;
         }
 
-        public async Task<ApiResponseBase> CreateAsync(Guid teamId, TaskCreateDto dto)
+        public async Task<ApiResponseBase> CreateManyAsync(Guid teamId, List<TaskCreateDto> dtos)
         {
-            var validator = new TaskValidator().Validate(dto);
-            if (!validator.IsValid)
+            var validationResult = await ValidateInput(dtos);
+            if (!validationResult.Success)
             {
-                _logger.LogWarn($"{nameof(TaskService.CreateAsync)}: Validation errors: {string.Join(',', validator.Errors)}");
-                return new BadRequestResponse(validator.Errors.FirstOrDefault()?.ErrorMessage ?? ResponseMessages.InvalidInput);
+                return validationResult;
             }
-
             var loggedInUserId = _repository.User.GetLoggedInUserId();
             if (string.IsNullOrEmpty(loggedInUserId))
             {
                 return new BadRequestResponse(ResponseMessages.InvalidUserCredentials);
-            }
-
-            var assignedUser = await _userManager.FindByIdAsync(dto.AssignTo);
-            if (assignedUser == null)
-            {
-                return new NotFoundResponse(ResponseMessages.UserNotFound);
             }
 
             var team = await _repository.Team.FindByIdAsync(teamId, false);
@@ -52,11 +44,11 @@ namespace Services
                 return new NotFoundResponse(ResponseMessages.TeamRecordNotFound);
             }
 
-            var task = dto.Map(loggedInUserId, teamId);
-            await _repository.Task.AddAsync(task);
+            var tasks = dtos.Map(loggedInUserId, teamId);
+            await _repository.Task.AddRangeAsync(tasks);
             await _repository.SaveAsync();
 
-            return new OkResponse<LeanTaskToReturnDto>(task.Map());
+            return new OkResponse<List<LeanTaskToReturnDto>>(tasks.MapTo());
         }
 
         public async Task<ApiResponseBase> GetTeamTasksAsync(Guid teamId)
@@ -82,6 +74,13 @@ namespace Services
             {
                 _logger.LogError($"TaskId {id}: {ResponseMessages.TaskRecordNotFound}");
                 return new NotFoundResponse(ResponseMessages.TeamRecordNotFound);
+            }
+
+            var isUserPermitted = await UserBelongsToTeam(task.TeamId);
+            if (!isUserPermitted)
+            {
+                _logger.LogError($"TaskId {id}: {ResponseMessages.PermissionDenied}");
+                return new ForbidResponse(ResponseMessages.PermissionDenied);
             }
 
             if (statusDto.Status.Equals(task.Status))
@@ -112,6 +111,13 @@ namespace Services
                 return new NotFoundResponse(ResponseMessages.TaskRecordNotFound);
             }
 
+            var isUserPermitted = await UserBelongsToTeam(task.TeamId);
+            if (!isUserPermitted)
+            {
+                _logger.LogError($"TaskId {id}: {ResponseMessages.PermissionDenied}");
+                return new ForbidResponse(ResponseMessages.PermissionDenied);
+            }
+
             var assignedUser = await _userManager.FindByIdAsync(dto.AssignTo);
             if (assignedUser == null)
             {
@@ -134,10 +140,53 @@ namespace Services
                 return new NotFoundResponse(ResponseMessages.TaskRecordNotFound);
             }
 
+            var isUserPermitted = await UserBelongsToTeam(task.TeamId);
+            if (!isUserPermitted)
+            {
+                _logger.LogError($"TaskId {id}: {ResponseMessages.PermissionDenied}");
+                return new ForbidResponse(ResponseMessages.PermissionDenied);
+            }
+
             _repository.Task.Deprecate(task);
             await _repository.SaveAsync();
 
             return new OkResponse<string>(ResponseMessages.TaskDeleted);
+        }
+
+        private async Task<bool> UserBelongsToTeam(Guid teamId)
+        {
+            var userId = _repository.User.GetLoggedInUserId();
+            var user = await _repository.TeamUser
+                .FindBy(tu => tu.TeamId.Equals(teamId) && tu.UserId.Equals(userId))
+                .FirstOrDefaultAsync();
+
+            return user != null;
+        }
+
+        private async Task<ApiResponseBase> ValidateInput(List<TaskCreateDto> dtos)
+        {
+            var userIds = dtos.Select(d => d.AssignTo).ToList();
+            var assignedUsers = await _userManager.Users.Where(u => userIds.Contains(u.Id))
+                .ToListAsync();
+
+            foreach (var dto in dtos)
+            {
+                var validator = new TaskValidator().Validate(dto);
+                if (!validator.IsValid)
+                {
+                    _logger.LogWarn($"{nameof(TaskService.CreateManyAsync)}: Validation errors: {string.Join(',', validator.Errors)}");
+                    return new BadRequestResponse(validator.Errors.FirstOrDefault()?.ErrorMessage ?? ResponseMessages.InvalidInput);
+                }
+
+                var assignedUser = assignedUsers.FirstOrDefault(u => u.Id.Equals(dto.AssignTo));
+                if (assignedUser == null)
+                {
+                    return new NotFoundResponse(ResponseMessages.UserNotFound);
+                }
+
+            }
+
+            return new OkResponse<string>("Validated OK");
         }
     }
 }

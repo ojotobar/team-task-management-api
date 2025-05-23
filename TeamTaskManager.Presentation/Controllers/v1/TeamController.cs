@@ -1,11 +1,11 @@
 ﻿using Asp.Versioning;
-using Entities.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
-using Shared.Extrensions;
+using TeamTaskManager.Presentation.Filters;
 using TeamTaskManager.Presentation.Controllers.v1.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -19,7 +19,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
 
         public TeamController(IServiceManager service)
         {
-            this._service = service;
+            _service = service;
         }
 
         /// <summary>
@@ -30,13 +30,17 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "TeamAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Create([FromBody] CreateTeamDto request)
         {
             var result = await _service.Team.Create(request);
             if(!result.Success)
                 return ProcessError(result);
 
-            return Ok(result);
+            return Ok(result.GetResult<TeamToReturnDto>());
         }
 
         /// <summary>
@@ -45,8 +49,13 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <param name="teamId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        [Authorize(Roles = "TeamAdmin")]
         [HttpPost("{teamId}/users")]
+        [Authorize(Roles = "TeamAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Invite([FromRoute] Guid teamId, [FromBody] TeamInvitaionDto request)
         {
             var result = await _service.Team.InviteUsers(teamId, request);
@@ -57,33 +66,48 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Get a list of all teams
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Authorize(Roles = "TeamAdmin")]
-        public async Task<IActionResult> Get()
-        {
-            var result = await _service.Team.Get();
-            if (!result.Success)
-                return ProcessError(result);
-
-            return Ok(result.GetResult<List<TeamToReturnDto>>());
-        }
-
-        /// <summary>
-        /// Get list of team members
+        /// Gets team tasks
         /// </summary>
         /// <param name="teamId"></param>
         /// <returns></returns>
-        [HttpGet("{teamId}")]
-        public async Task<IActionResult> GetMembers([FromRoute] Guid teamId)
+        [HttpGet("{teamId}/tasks")]
+        [TeamPermission]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetTeamTasks([FromRoute] Guid teamId)
         {
-            var result = await _service.Team.GetTeamMembers(teamId);
+            var result = await _service.Task.GetTeamTasksAsync(teamId);
             if (!result.Success)
                 return ProcessError(result);
 
-            return Ok(result.GetResult<List<UserToReturnDto>>());
+            return Ok(result.GetResult<List<TaskToReturnDto>>());
+        }
+
+
+
+        /// <summary>
+        /// Create a task
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("{teamId}/tasks")]
+        [TeamPermission]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateTasks([FromRoute] Guid teamId, [FromBody] List<TaskCreateDto> request)
+        {
+            var result = await _service.Task.CreateManyAsync(teamId, request);
+            if (!result.Success)
+                return ProcessError(result);
+
+            return Ok(result.GetResult<List<LeanTaskToReturnDto>>());
         }
     }
 }

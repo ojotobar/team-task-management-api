@@ -34,7 +34,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
                 return ProcessError(baseResponse);
             }
 
-            return Ok(baseResponse);
+            return Ok(baseResponse.GetResult<UserToReturnDto>());
         }
 
         /// <summary>

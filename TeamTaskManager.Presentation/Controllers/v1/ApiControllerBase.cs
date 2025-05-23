@@ -36,6 +36,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
                     Message = ((UnAuthorizedResponse)baseResponse).Message,
                     StatusCode = StatusCodes.Status401Unauthorized
                 }),
+                ForbidResponse => new ForbidResult(),
                 _ => throw new NotImplementedException()
             };
         }

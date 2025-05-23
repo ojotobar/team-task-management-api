@@ -40,6 +40,33 @@ namespace Services
             return new OkResponse<UserToReturnDto>(user.Map());
         }
 
+        public async Task<ApiResponseBase> UserIsATeamMember(Guid teamId, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                _logger.LogError($"No user found with Id: {userId}");
+                return new NotFoundResponse(ResponseMessages.UserNotFound);
+            }
+
+            var team = await _repository.Team.FindByIdAsync(teamId, false);
+            if (team == null)
+            {
+                _logger.LogError($"No user found with Id: {teamId}");
+                return new NotFoundResponse(ResponseMessages.TeamRecordNotFound);
+            }
+
+            var teamUser = await _repository.TeamUser.FindBy(tu => tu.TeamId.Equals(teamId) && tu.UserId.Equals(user.Id))
+                .FirstOrDefaultAsync();
+
+            if (teamUser == null)
+            {
+                return new NotFoundResponse(ResponseMessages.UserNotFound);
+            }
+
+            return new OkResponse<bool>(true);
+        }
+
         public async Task<ApiResponseBase> GetUsers()
         {
             var users = await _userManager.Users.Where(u => u.EmailConfirmed).ToListAsync() ?? new List<User>();

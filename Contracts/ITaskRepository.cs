@@ -5,6 +5,7 @@ namespace Contracts
     public interface ITaskRepository
     {
         Task AddAsync(TaskItem item);
+        Task AddRangeAsync(List<TaskItem> entities);
         void Deprecate(TaskItem task);
         void Edit(TaskItem task);
         Task<List<TaskItem>> FindAsync(Guid teamId);

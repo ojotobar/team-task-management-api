@@ -1,22 +1,26 @@
 ﻿using Contracts;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 namespace LoggerService
 {
-    public class AppLogger : IAppLogger
+    public class AppLogger<TType> : IAppLogger
     {
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<TType> _logger;
+        public AppLogger(ILogger<TType> logger)
+        {
+            _logger = logger;
+        }
 
         public void LogDebug(string message) =>
-            _logger.Debug(message);
+            _logger.LogDebug(message);
 
         public void LogError(string message) =>
-            _logger.Error(message);
+            _logger.LogError(message);
 
         public void LogInfo(string message) =>
-            _logger.Info(message);
+            _logger.LogInformation(message);
 
         public void LogWarn(string message) => 
-            _logger.Warn(message);
+            _logger.LogWarning(message);
     }
 }

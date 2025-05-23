@@ -16,5 +16,6 @@
         public static readonly string TaskRecordNotFound = "Task record not found.";
         public static readonly string AlreadyInStatus = "Task already in '{0}' status. Please try another status.";
         public static readonly string TaskDeleted = "Task record successfully deleted";
+        public static readonly string PermissionDenied = "User denied permission to carry out this action.";
     }
 }
