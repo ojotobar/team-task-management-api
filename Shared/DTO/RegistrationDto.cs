@@ -1,5 +1,4 @@
 ﻿using Entities.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace Shared.DTO
 {

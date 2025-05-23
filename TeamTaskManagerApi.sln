@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9F7BAB1A-2F6B-4195-AA94-B4B12C22014E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Test", "Services.Test\Services.Test.csproj", "{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeakTaskManagerApi.Tests", "TeakTaskManagerApi.Tests\TeakTaskManagerApi.Tests.csproj", "{98DF8C87-1E81-41E2-A75B-BDF9A00D2433}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,16 +67,16 @@ Global
 		{5C3521A9-2ED0-4872-9011-42D44CFD3EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C3521A9-2ED0-4872-9011-42D44CFD3EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C3521A9-2ED0-4872-9011-42D44CFD3EDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98DF8C87-1E81-41E2-A75B-BDF9A00D2433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98DF8C87-1E81-41E2-A75B-BDF9A00D2433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98DF8C87-1E81-41E2-A75B-BDF9A00D2433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98DF8C87-1E81-41E2-A75B-BDF9A00D2433}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6739C68C-292F-4B6B-9E5A-62A8E6A0DF91} = {9F7BAB1A-2F6B-4195-AA94-B4B12C22014E}
+		{98DF8C87-1E81-41E2-A75B-BDF9A00D2433} = {9F7BAB1A-2F6B-4195-AA94-B4B12C22014E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C694E65-83DE-42D0-B6E5-4626BAC6B910}
