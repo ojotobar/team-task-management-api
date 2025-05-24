@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamTaskManagerApi.Migrations
 {
-    public partial class TeamTaskManagementMigration : Migration
+    public partial class MigrateDatabaseTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
