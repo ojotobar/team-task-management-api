@@ -26,7 +26,7 @@ namespace TeamTaskManagerApi.Tests
             var userId = Guid.NewGuid();
 
             _mockService.Setup(x => x.User.GetLoggedInUserInfo())
-                .ReturnsAsync(new OkResponse<UserToReturnDto>(new UserToReturnDto
+                .ReturnsAsync(new OkResponse<UserWithTeamsToReturnDto>(new UserWithTeamsToReturnDto
                 {
                     Id = userId.ToString(),
                     Name = "Test User"

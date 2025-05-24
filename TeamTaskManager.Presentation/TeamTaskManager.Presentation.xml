@@ -94,7 +94,8 @@
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.UserController.GetAll">
             <summary>
-            Get all users
+            Get all users. Not part of the requirements, 
+            but this was added to ease the use of other endpoints like inviting users to a team
             </summary>
             <returns></returns>
         </member>
