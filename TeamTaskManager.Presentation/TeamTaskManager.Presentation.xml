@@ -21,15 +21,15 @@
             <summary>
             Registers a new user
             </summary>
-            <param name="request"></param>
+            <param name="request">Role is 1 for TeamAdmin, 2 for Member</param>
             <returns></returns>
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.AuthenticationController.Login(Shared.DTO.LoginDto)">
             <summary>
-            Login a new user
+            Login a user
             </summary>
             <param name="request"></param>
-            <returns>Access Token</returns>
+            <returns>The Access Token</returns>
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.TaskController.Update(System.Guid,Shared.DTO.TaskUpdateDto)">
             <summary>
@@ -64,7 +64,8 @@
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.TeamController.Invite(System.Guid,Shared.DTO.TeamInvitaionDto)">
             <summary>
-            Invite users to the team
+            Invite users to the team.
+            Only a team admin can invite a user to the team
             </summary>
             <param name="teamId"></param>
             <param name="request"></param>
@@ -79,7 +80,7 @@
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.TeamController.CreateTasks(System.Guid,System.Collections.Generic.List{Shared.DTO.TaskCreateDto})">
             <summary>
-            Create a task
+            Create one or more task
             </summary>
             <param name="teamId"></param>
             <param name="request"></param>

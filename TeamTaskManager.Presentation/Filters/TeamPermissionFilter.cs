@@ -1,7 +1,6 @@
 ﻿using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using Services.Contracts;
 using System.Security.Claims;
 
@@ -43,11 +42,12 @@ namespace TeamTaskManager.Presentation.Filters
                 var teamCheckResult = await _service.User.UserIsATeamMember(teamId, userId!);
                 if (teamCheckResult != null && teamCheckResult.Success)
                 {
+                    _logger.LogInfo($"{nameof(TeamPermissionFilter)} - User {userId} granted permission to access the team's resources");
                     await next();
                 }
                 else
                 {
-                    _logger.LogWarn($"{nameof(TeamPermissionFilter)} - User is not a team memeber.");
+                    _logger.LogWarn($"{nameof(TeamPermissionFilter)} - User {userId} is not a team member.");
                     context.Result = new ForbidResult();
                     return;
                 }

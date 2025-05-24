@@ -117,6 +117,17 @@ namespace Shared.DTO
                 Email = user.Email
             };
 
+        public static UserWithTeamsToReturnDto Map(this User user, List<Team?>? teams)
+        {
+            return new()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Teams = teams.MapTo()
+            };
+        }
+
         public static List<UserToReturnDto> Map(this List<User>? users)
         {
             var mappedUsers = new List<UserToReturnDto>();
@@ -176,6 +187,27 @@ namespace Shared.DTO
                 Id = x.Id,
                 Name = x.Name,
             }));
+
+            return mappedTeams;
+        }
+
+        public static List<TeamToReturnDto> MapTo(this List<Team?>? teams)
+        {
+            var mappedTeams = new List<TeamToReturnDto>();
+            if(teams != null)
+            {
+                foreach(var team in teams)
+                {
+                    if(team != null)
+                    {
+                        mappedTeams.Add(new TeamToReturnDto
+                        {
+                            Id = team.Id,
+                            Name = team.Name,
+                        });
+                    }
+                }
+            }
 
             return mappedTeams;
         }

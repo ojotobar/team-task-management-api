@@ -37,7 +37,12 @@ namespace Services
                 return new NotFoundResponse(ResponseMessages.UserNotFound);
             }
 
-            return new OkResponse<UserToReturnDto>(user.Map());
+            var userTeams = await _repository.TeamUser.FindBy(tu => tu.UserId.Equals(userId))
+                .Include(tu => tu.Team)
+                .Select(t => t.Team)
+                .ToListAsync() ?? new List<Team?>();
+
+            return new OkResponse<UserWithTeamsToReturnDto>(user.Map(userTeams));
         }
 
         public async Task<ApiResponseBase> UserIsATeamMember(Guid teamId, string userId)

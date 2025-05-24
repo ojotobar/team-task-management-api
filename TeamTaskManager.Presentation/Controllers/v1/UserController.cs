@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
+using Shared.DTO;
+using TeamTaskManager.Presentation.Controllers.v1.Extensions;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -33,15 +35,15 @@ namespace TeamTaskManager.Presentation.Controllers.v1
             if(!result.Success)
                 return ProcessError(result);
 
-            return Ok(result);
+            return Ok(result.GetResult<UserWithTeamsToReturnDto>());
         }
 
         /// <summary>
-        /// Get all users
+        /// Get all users. Not part of the requirements, 
+        /// but this was added to ease the use of other endpoints like inviting users to a team
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "TeamAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

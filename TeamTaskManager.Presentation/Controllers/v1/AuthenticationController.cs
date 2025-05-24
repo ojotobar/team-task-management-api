@@ -20,7 +20,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <summary>
         /// Registers a new user
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">Role is 1 for TeamAdmin, 2 for Member</param>
         /// <returns></returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,10 +38,10 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Login a new user
+        /// Login a user
         /// </summary>
         /// <param name="request"></param>
-        /// <returns>Access Token</returns>
+        /// <returns>The Access Token</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -44,7 +44,8 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Invite users to the team
+        /// Invite users to the team.
+        /// Only a team admin can invite a user to the team
         /// </summary>
         /// <param name="teamId"></param>
         /// <param name="request"></param>
@@ -88,7 +89,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
 
 
         /// <summary>
-        /// Create a task
+        /// Create one or more task
         /// </summary>
         /// <param name="teamId"></param>
         /// <param name="request"></param>
