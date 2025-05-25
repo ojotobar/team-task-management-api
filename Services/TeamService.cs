@@ -35,6 +35,13 @@ namespace Services
             await _repository.Team.AddAsync(team);
             await _repository.SaveAsync();
 
+            //Add the team creator to as a default member of the team.
+            var userId = _repository.User.GetLoggedInUserId();
+            await InviteUsers(team.Id, new TeamInvitaionDto
+            {
+                UserIds = new List<string> { userId }
+            });
+
             return new OkResponse<TeamToReturnDto>(team.Map());
         }
 
