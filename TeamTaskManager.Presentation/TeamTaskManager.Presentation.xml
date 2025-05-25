@@ -48,7 +48,7 @@
         </member>
         <member name="M:TeamTaskManager.Presentation.Controllers.v1.TaskController.UpdateStatus(System.Guid,Shared.DTO.TaskStatusDto)">
             <summary>
-            Update task status
+            Update task status. 0 - Pending, 1 - In Progress, 2 - Completed
             </summary>
             <param name="taskId"></param>
             <param name="request"></param>
