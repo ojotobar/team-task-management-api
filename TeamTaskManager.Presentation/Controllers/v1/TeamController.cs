@@ -25,6 +25,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <summary>
         /// Creates a Team.
         /// Only a User on the Team Admin role can access this endpoint
+        /// This action will add the team creator as a default member of the team.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -45,13 +46,13 @@ namespace TeamTaskManager.Presentation.Controllers.v1
 
         /// <summary>
         /// Invite users to the team.
-        /// Only a team admin can invite a user to the team
+        /// Only a team member can invite a user to the team
         /// </summary>
         /// <param name="teamId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("{teamId}/users")]
-        [Authorize(Roles = "TeamAdmin")]
+        [TeamPermission]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
