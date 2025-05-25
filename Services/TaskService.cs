@@ -44,6 +44,13 @@ namespace Services
                 return new NotFoundResponse(ResponseMessages.TeamRecordNotFound);
             }
 
+            var nonMenbersCheck = await UsersBelongsToTeam(teamId, dtos.Select(u => u.AssignTo).ToList());
+            if (!nonMenbersCheck.AllAreMembers)
+            {
+                var messageVerbiage = nonMenbersCheck.NonMenbersCount > 1 ? $"{nonMenbersCheck.NonMenbersCount} users" : "A user";
+                return new BadRequestResponse(string.Format(ResponseMessages.SomeUsersNotInTeam, messageVerbiage, team.Name));
+            }
+
             var tasks = dtos.Map(loggedInUserId, teamId);
             await _repository.Task.AddRangeAsync(tasks);
             await _repository.SaveAsync();
@@ -153,6 +160,7 @@ namespace Services
             return new OkResponse<string>(ResponseMessages.TaskDeleted);
         }
 
+        #region Private methods
         private async Task<bool> UserBelongsToTeam(Guid teamId)
         {
             var userId = _repository.User.GetLoggedInUserId();
@@ -161,6 +169,15 @@ namespace Services
                 .FirstOrDefaultAsync();
 
             return user != null;
+        }
+
+        private async Task<(bool AllAreMembers, int NonMenbersCount)> UsersBelongsToTeam(Guid teamId, List<string> userIds)
+        {
+            var users = await _repository.TeamUser
+                .FindBy(tu => tu.TeamId.Equals(teamId) && userIds.Contains(tu.UserId))
+                .ToListAsync();
+
+            return (users.Count == userIds.Count, userIds.Count - users.Count);
         }
 
         private async Task<ApiResponseBase> ValidateInput(List<TaskCreateDto> dtos)
@@ -188,5 +205,7 @@ namespace Services
 
             return new OkResponse<string>("Validated OK");
         }
+
+        #endregion
     }
 }

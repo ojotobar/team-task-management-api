@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
 using TeamTaskManager.Presentation.Controllers.v1.Extensions;
+using TeamTaskManager.Presentation.Filters;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -28,6 +29,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{taskId}")]
+        [RequestValidation]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,12 +67,13 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         }
 
         /// <summary>
-        /// Update task status
+        /// Update task status. 0 - Pending, 1 - In Progress, 2 - Completed
         /// </summary>
         /// <param name="taskId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPatch("{taskId}")]
+        [RequestValidation]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

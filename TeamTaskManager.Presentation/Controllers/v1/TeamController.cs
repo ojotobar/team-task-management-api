@@ -31,6 +31,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "TeamAdmin")]
+        [RequestValidation]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,6 +54,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <returns></returns>
         [HttpPost("{teamId}/users")]
         [TeamPermission]
+        [RequestValidation]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,6 +99,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         /// <returns></returns>
         [HttpPost("{teamId}/tasks")]
         [TeamPermission]
+        [RequestValidation]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

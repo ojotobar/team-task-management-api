@@ -72,6 +72,7 @@ namespace TeamTaskManagerApi.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<TeamPermissionFilter>();
+            services.AddScoped<RequestValidationFilter>();
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
         }

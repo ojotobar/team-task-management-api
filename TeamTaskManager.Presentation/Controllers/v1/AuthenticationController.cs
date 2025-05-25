@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Shared.DTO;
 using TeamTaskManager.Presentation.Controllers.v1.Extensions;
+using TeamTaskManager.Presentation.Filters;
 
 namespace TeamTaskManager.Presentation.Controllers.v1
 {
@@ -26,6 +27,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("register")]
+        [RequestValidation]
         public async Task<IActionResult> Register([FromBody] RegistrationDto request)
         {
             var baseResponse = await _services.Authentication.Register(request);
@@ -46,6 +48,7 @@ namespace TeamTaskManager.Presentation.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost("login")]
+        [RequestValidation]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
         {
             var baseResponse = await _services.Authentication.Login(request);
